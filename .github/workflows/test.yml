@@ -1,0 +1,30 @@
+name: test
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m unittest -v
+      - run: python make_sample.py
+      - name: Reports on the sample files
+        shell: python
+        run: |
+          import subprocess, sys
+          def run(name):
+              return subprocess.run([sys.executable, "textcheck.py", "sample/" + name], capture_output=True, text=True)
+          for name in ("unix.txt", "windows.txt"):
+              out = run(name)
+              assert out.returncode == 0 and "No problems found" in out.stdout, (name, out.stdout)
+          mixed = run("mixed.txt")
+          assert mixed.returncode == 1 and "Mixed or unusual line endings" in mixed.stdout, mixed.stdout
+          assert "The last line has no line ending" in mixed.stdout, mixed.stdout
+          latin = run("latin1.txt")
+          assert latin.returncode == 1 and "Not valid UTF-8" in latin.stdout, latin.stdout
+          print("Sample file reports checked.")
