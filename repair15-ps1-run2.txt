@@ -1,0 +1,89 @@
+### CMD: python --version
+Python 3.12.10
+### EXIT: 0
+
+### CMD: python make_sample.py
+Made sample/unix.txt, windows.txt, mixed.txt and latin1.txt
+### EXIT: 0
+
+### CMD: python make_sample.py
+Stopped: sample already exists. Nothing was replaced or deleted.
+### EXIT: 1
+
+### CMD: python -c "print(open('sample/windows.txt','rb').read())"
+b'first line\r\nsecond line\r\nthird line\r\n'
+### EXIT: 0
+
+### CMD: python -c "print(open('sample/unix.txt','rb').read())"
+b'first line\nsecond line\nthird line\n'
+### EXIT: 0
+
+### CMD: python textcheck.py sample/windows.txt
+Lines: 3
+### EXIT: 0
+
+### CMD: python textcheck.py sample/unix.txt
+Lines: 3
+### EXIT: 0
+
+### CMD: python textcheck.py sample/unix.txt
+Size: 34 bytes, 3 lines
+Line endings: 0 Windows (CRLF), 3 Unix (LF), 0 lone CR
+No problems found by these checks.
+### EXIT: 0
+
+### CMD: python textcheck.py sample/windows.txt
+Size: 37 bytes, 3 lines
+Line endings: 3 Windows (CRLF), 0 Unix (LF), 0 lone CR
+No problems found by these checks.
+### EXIT: 0
+
+### CMD: python textcheck.py sample/mixed.txt
+Size: 45 bytes, 4 lines
+Line endings: 1 Windows (CRLF), 2 Unix (LF), 0 lone CR
+Note: lines with a tab: 1 (line numbers: 3).
+Problem: Mixed or unusual line endings: the file does not use one kind throughout.
+Problem: Lines that end with a space or tab: 1 (line numbers: 2).
+Problem: The last line has no line ending.
+### EXIT: 1
+
+### CMD: python textcheck.py sample/latin1.txt
+Size: 22 bytes, 2 lines
+Line endings: 0 Windows (CRLF), 2 Unix (LF), 0 lone CR
+Problem: Not valid UTF-8: first bad byte at offset 3, on line 1.
+### EXIT: 1
+
+### CMD: python -m unittest -v
+test_blank_last_line_counts (test_textcheck.CountTests.test_blank_last_line_counts) ... ok
+test_bom_detected (test_textcheck.CountTests.test_bom_detected) ... ok
+test_crcrlf_counts_one_lone_cr (test_textcheck.CountTests.test_crcrlf_counts_one_lone_cr) ... ok
+test_empty_file (test_textcheck.CountTests.test_empty_file) ... ok
+test_final_newline_missing (test_textcheck.CountTests.test_final_newline_missing) ... ok
+test_line_of_only_spaces_is_trailing (test_textcheck.CountTests.test_line_of_only_spaces_is_trailing) ... ok
+test_lone_cr (test_textcheck.CountTests.test_lone_cr) ... ok
+test_nul_byte_found (test_textcheck.CountTests.test_nul_byte_found) ... ok
+test_tabs_listed_with_line_numbers (test_textcheck.CountTests.test_tabs_listed_with_line_numbers) ... ok
+test_trailing_space_and_tab (test_textcheck.CountTests.test_trailing_space_and_tab) ... ok
+test_trailing_space_before_crlf (test_textcheck.CountTests.test_trailing_space_before_crlf) ... ok
+test_unix_endings (test_textcheck.CountTests.test_unix_endings) ... ok
+test_utf8_error_position (test_textcheck.CountTests.test_utf8_error_position) ... ok
+test_valid_utf8_with_accents (test_textcheck.CountTests.test_valid_utf8_with_accents) ... ok
+test_windows_endings (test_textcheck.CountTests.test_windows_endings) ... ok
+test_missing_file_exit_two (test_textcheck.ReportTests.test_missing_file_exit_two) ... ok
+test_mixed_endings_is_a_problem (test_textcheck.ReportTests.test_mixed_endings_is_a_problem) ... ok
+test_one_kind_of_ending_passes_either_way (test_textcheck.ReportTests.test_one_kind_of_ending_passes_either_way) ... ok
+test_only_first_five_shown_with_total (test_textcheck.ReportTests.test_only_first_five_shown_with_total) ... ok
+test_tabs_alone_are_only_a_note (test_textcheck.ReportTests.test_tabs_alone_are_only_a_note) ... ok
+test_wrong_arguments_exit_two (test_textcheck.ReportTests.test_wrong_arguments_exit_two) ... ok
+test_checking_does_not_change_the_file (test_textcheck.SampleTests.test_checking_does_not_change_the_file) ... ok
+test_sample_files_report_as_described (test_textcheck.SampleTests.test_sample_files_report_as_described) ... ok
+test_cli_refuses_without_replacing (test_textcheck.SetupSafetyTests.test_cli_refuses_without_replacing) ... ok
+test_existing_file_preserved (test_textcheck.SetupSafetyTests.test_existing_file_preserved) ... ok
+test_existing_folder_preserves_nested_bytes_and_metadata (test_textcheck.SetupSafetyTests.test_existing_folder_preserves_nested_bytes_and_metadata) ... ok
+test_repeat_setup_preserves_generated_bytes_and_metadata (test_textcheck.SetupSafetyTests.test_repeat_setup_preserves_generated_bytes_and_metadata) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.112s
+
+OK
+### EXIT: 0
