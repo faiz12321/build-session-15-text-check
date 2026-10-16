@@ -6,7 +6,7 @@ A small read-only Python tool built step by step. Give it one text file and it r
 
     python make_sample.py                   # makes made-up files in sample/
     python textcheck.py sample/mixed.txt    # report on one file
-    python -m unittest -v                   # twenty-three automated tests
+    python -m unittest -v                   # 27 temporary-fixture tests
 
 On Windows, if `python` is not found, use `py`.
 
@@ -28,3 +28,9 @@ On Windows, if `python` is not found, use `py`.
 - Tested only on small made-up files. Python 3.10 (Linux) and, by GitHub Actions, Python 3.12 on Windows and Ubuntu. Not tested on a Windows 10 or 11 desktop.
 - Educational example, no warranty. Use at your own risk.
 - Code is MIT licensed (see LICENSE). Python is a separate project with its own license; this repository does not include it.
+
+## Setup safety and evidence
+
+Setup refuses every existing sample path and exclusively writes four fictional text files in a new folder. It does not replace or delete old data. Start in a new empty lesson folder; do not delete old work to force a retry. Four setup collision/repeat/CLI tests check preservation of unrelated nested bytes and modification times. The checker is unchanged. It reads all bytes and creates an in-memory line list, so large files can use substantial memory. Input links are followed. Reports can reveal names, paths, line numbers and errors; keep private output private. This is not a security scanner or encoding detector. Concurrent hostile filesystem changes are outside the tested scope.
+
+Two Windows and two Ubuntu full replays pass 27 tests. Each platform pair differs only in unittest time. Displays use first Windows output. The recorder writes exact visible first/final versions into a unique temporary folder and removes only that folder. Setup itself refuses repeat runs. Phone interactions and 320/390/1280 layout checks pass. These are limited fictional-fixture checks, not real-file or desktop tests.
