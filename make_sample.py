@@ -14,12 +14,16 @@ FILES = {
 
 def make(folder):
     folder = Path(folder)
-    folder.mkdir(exist_ok=True)
+    folder.mkdir()
     for name, data in FILES.items():
-        (folder / name).write_bytes(data)
+        with (folder / name).open("xb") as handle:
+            handle.write(data)
     return folder
 
 
 if __name__ == "__main__":
-    make("sample")
+    try:
+        make("sample")
+    except FileExistsError:
+        raise SystemExit("Stopped: sample already exists. Nothing was replaced or deleted.")
     print("Made sample/unix.txt, windows.txt, mixed.txt and latin1.txt")
